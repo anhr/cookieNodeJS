@@ -18,7 +18,7 @@ or
 
 Now you can use window.cookie for store user information in web pages.
 
-### isEnabled()
+### cookie.isEnabled()
 
 Is the cookie enabled in your web browser?
 
@@ -26,7 +26,10 @@ Is the cookie enabled in your web browser?
 
 ### Example
 ```
-cookie.set('age', 25);
+if ( cookie.isEnabled() )
+	console.log('cookie is enabled on your browser');
+else
+	console.error('cookie is disabled on your browser');
 ```
 
 ### cookie.set( name, value )
@@ -41,17 +44,28 @@ Set a cookie.
 cookie.set('age', 25);
 ```
 
-### cookie.get(name, defaultValue);
+### cookie.get( name[, defaultValue] );
 
 get a cookie.
 
 	name: cookie name.
-	defaultValue: cookie default value.
+	defaultValue: cookie default value. Default is undefined.
 	returns cookie value or defaultValue if cookie was not found
 
 ### Example
 ```
 var age = cookie.get('age', 25);
+```
+
+### cookie.remove( name );
+
+Remove cookie.
+
+	name: cookie name.
+
+### Example
+```
+cookie.remove( 'age' );
 ```
 
 See [Example of using](https://raw.githack.com/anhr/cookieNodeJS/master/).
