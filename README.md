@@ -39,7 +39,7 @@ Set a cookie.
 	name: cookie name.
 	value: cookie value.
 
-### Example
+#### Example
 ```
 cookie.set('age', 25);
 ```
@@ -52,7 +52,7 @@ get a cookie.
 	defaultValue: cookie default value. Default is undefined.
 	returns cookie value or defaultValue if cookie was not found
 
-### Example
+#### Example
 ```
 var age = cookie.get('age', 25);
 ```
@@ -63,7 +63,7 @@ Remove cookie.
 
 	name: cookie name.
 
-### Example
+#### Example
 ```
 cookie.remove( 'age' );
 ```
