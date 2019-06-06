@@ -1,0 +1,14 @@
+test page
+https://raw.githack.com/anhr/cookieNodeJS/master/index.html
+-------------------------------------------
+JSDoc 3 is an API documentation generator for JavaScript
+https://jsdoc.app/
+--------------------------------
+Building cookie
+
+Open "Node.js command prompt"
+
+d:
+cd "D:\WebFeatures\GoogleSite\nodejs\cookieNodeJS"
+npm install
+npm run build
