@@ -18,7 +18,18 @@ or
 
 Now you can use window.cookie for store user information in web pages.
 
-### cookie.set(name, value)
+### isEnabled()
+
+Is the cookie enabled in your web browser?
+
+	returns {boolean} true if cookie enabled
+
+### Example
+```
+cookie.set('age', 25);
+```
+
+### cookie.set( name, value )
 
 Set a cookie.
 
