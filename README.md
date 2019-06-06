@@ -24,7 +24,7 @@ Is the cookie enabled in your web browser?
 
 	returns {boolean} true if cookie enabled
 
-### Example
+#### Example
 ```
 if ( cookie.isEnabled() )
 	console.log('cookie is enabled on your browser');
