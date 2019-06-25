@@ -31,6 +31,7 @@ function set(name, value, cookie_date) {
 		cookie_date.setTime(cookie_date.getTime() + 1000 * 60 * 60 * 24 * 365);
 	}
 	document.cookie = name + "=" + value + (typeof settings == 'undefined' ? '' : settings) + "; expires=" + cookie_date.toGMTString();
+	if (document.cookie === '') console.error('document.cookie is empty');
 }
 function get(name, defaultValue) {
 	if (!isEnabled()) {

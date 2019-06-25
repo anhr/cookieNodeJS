@@ -56,6 +56,8 @@ function set( name, value, cookie_date ) {
 
 	}
 	document.cookie = name + "=" + value + ( ( typeof settings == 'undefined' ) ? '' : settings ) + "; expires=" + cookie_date.toGMTString();
+	if ( document.cookie === '' )
+		console.error( 'document.cookie is empty' );
 
 }
 
