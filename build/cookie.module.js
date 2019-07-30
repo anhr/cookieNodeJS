@@ -11,12 +11,6 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
-	typeof define === 'function' && define.amd ? define(['exports'], factory) :
-	(factory((global.cookie = {})));
-}(this, (function (exports) { 'use strict';
-
 function isEnabled() {
 	return navigator.cookieEnabled;
 }
@@ -62,14 +56,5 @@ function consoleCookieEnabled() {
 	console.error('navigator.cookieEnabled = ' + navigator.cookieEnabled);
 }
 
-exports.isEnabled = isEnabled;
-exports.set = set;
-exports.setObject = setObject;
-exports.get = get;
-exports.getObject = getObject;
-exports.remove = remove;
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-})));
-//# sourceMappingURL=cookie.js.map
+export { isEnabled, set, setObject, get, getObject, remove };
+//# sourceMappingURL=cookie.module.js.map

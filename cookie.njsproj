@@ -34,6 +34,9 @@
     </Content>
     <Content Include="index.html" />
     <Content Include="index.js" />
+    <Content Include="JavaScript.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="licenseBanner.txt" />
     <Content Include="package.json" />
     <Content Include="README.md" />
