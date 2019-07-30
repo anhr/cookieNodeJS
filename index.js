@@ -14,7 +14,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-export { isEnabled, set, setObject, get, getObject, remove };
+export { isEnabled, set, setObject, get, getObject, remove, defaultCookie };
 
 /**
  * Is the cookie enabled in your web browser?
@@ -117,20 +117,34 @@ function get( name, defaultValue ) {
  * @param {Object} optionsDefault returns this default object if named object is not exists in the cookie.
  * @returns an object
  */
+/*
 function getObject( name, objectDefault ) {
 
 	return JSON.parse( get( name, JSON.stringify( objectDefault ) ) );
+
+};
+*/
+/**
+ * gets an object from cookie.
+ * @param {string} name name of the object
+ * @param {any} options load an object from cookie into options
+ * @param {Object} optionsDefault copy to options this default object if named object is not exists in the cookie.
+ */
+function getObject( name, options, optionsDefault ) {
+
+	if ( options.optionsDefault === undefined )
+		options.optionsDefault = optionsDefault;
+	new defaultCookie().getObject( name, options, JSON.parse( options.cookie.get( name, JSON.stringify( optionsDefault ) ) ) );
 /*
 	if ( !optionsDefault )
 		return;//object's settings is not saving
 
-	if ( options.optionsDefault === undefined )
-		options.optionsDefault = optionsDefault;
 	if ( options.cookieObject === undefined )
-		options.cookieObject = this;
+		options.cookieObject = options.cookie;
 
 	options.cookieObject.options = options;
 	var cookieObject = JSON.parse( options.cookieObject.get( name, JSON.stringify( options.optionsDefault ) ) );
+//	var cookieObject = options.cookieObject.getObject( name, optionsDefault );
 	Object.keys( options.optionsDefault ).forEach( function ( key ) {
 
 		if ( cookieObject[key] === undefined )
@@ -170,7 +184,6 @@ function getObject( name, objectDefault ) {
 
 	} );
 */
-
 };
 
 /**
@@ -195,3 +208,90 @@ function consoleCookieEnabled() {
 	console.error( 'navigator.cookieEnabled = ' + navigator.cookieEnabled );
 
 }
+
+//Default cookie is not saving settings
+function defaultCookie( name ) {
+
+	this.get = function ( defaultValue ) {
+
+		// Default cookie is not loading settings
+		return defaultValue;
+
+	};
+
+	this.set = function () {
+
+		// Default cookie is not saving settings
+
+	};
+
+	this.getObject = function ( name, options, optionsDefault ) {
+
+		// Default cookie is not loading objects
+//		return optionsDefault;
+		if ( !optionsDefault )
+			return;//object's settings is not saving
+
+		if ( options.optionsDefault === undefined )
+			options.optionsDefault = optionsDefault;
+
+		if ( options.cookieObject === undefined )
+			options.cookieObject = options.cookie;
+
+		options.cookieObject.options = options;
+//		var cookieObject = JSON.parse( options.cookieObject.get( name, JSON.stringify( options.optionsDefault ) ) );
+		var cookieObject = optionsDefault;
+		Object.keys( options.optionsDefault ).forEach( function ( key ) {
+
+			if ( cookieObject[key] === undefined )
+				return;
+			if ( typeof options.optionsDefault[key] === "object" )
+				Object.keys( options.optionsDefault[key] ).forEach( function ( key2 ) {
+
+					if ( options[key] === undefined ) options[key] = cookieObject[key];
+					if ( cookieObject[key][key2] !== undefined ) {
+
+						if ( typeof cookieObject[key][key2] === "object" )
+							Object.keys( cookieObject[key][key2] ).forEach( function ( key3 ) {
+
+								if ( options[key][key2] === undefined ) options[key][key2] = cookieObject[key][key2];
+								if ( cookieObject[key][key2][key3] !== undefined )
+									options[key][key2][key3] = cookieObject[key][key2][key3];
+
+							} );
+						else {
+
+							options[key][key2] = cookieObject[key][key2];
+							if ( options.commonOptions !== undefined )
+								options.commonOptions[key][key2] = cookieObject[key][key2];
+
+						}
+
+					}
+
+				} );
+			else {
+
+				options[key] = cookieObject[key];
+				if ( options.commonOptions !== undefined )
+					options.commonOptions[key] = cookieObject[key];
+
+			}
+
+		} );
+
+	};
+
+	this.setObject = function () {
+
+		// Default cookie is not saving object's settings
+
+	};
+
+	this.isTrue = function ( defaultValue ) {
+
+		return defaultValue;
+
+	};
+
+};
