@@ -40,8 +40,9 @@ function get(name, defaultValue) {
 	if (typeof defaultValue == 'undefined') return '';
 	return defaultValue;
 }
-function getObject(name, objectDefault) {
-	return JSON.parse(get(name, JSON.stringify(objectDefault)));
+function getObject(name, options, optionsDefault) {
+	if (options.optionsDefault === undefined) options.optionsDefault = optionsDefault;
+	new defaultCookie().getObject(name, options, JSON.parse(options.cookie.get(name, JSON.stringify(optionsDefault))));
 }
 function remove(name) {
 	if (!isEnabled()) {
@@ -55,6 +56,43 @@ function remove(name) {
 function consoleCookieEnabled() {
 	console.error('navigator.cookieEnabled = ' + navigator.cookieEnabled);
 }
+function defaultCookie(name) {
+	this.get = function (defaultValue) {
+		return defaultValue;
+	};
+	this.set = function () {
+	};
+	this.getObject = function (name, options, optionsDefault) {
+		if (!optionsDefault) return;
+		if (options.optionsDefault === undefined) options.optionsDefault = optionsDefault;
+		if (options.cookieObject === undefined) options.cookieObject = options.cookie;
+		options.cookieObject.options = options;
+		var cookieObject = optionsDefault;
+		Object.keys(options.optionsDefault).forEach(function (key) {
+			if (cookieObject[key] === undefined) return;
+			if (typeof options.optionsDefault[key] === "object") Object.keys(options.optionsDefault[key]).forEach(function (key2) {
+				if (options[key] === undefined) options[key] = cookieObject[key];
+				if (cookieObject[key][key2] !== undefined) {
+					if (typeof cookieObject[key][key2] === "object") Object.keys(cookieObject[key][key2]).forEach(function (key3) {
+						if (options[key][key2] === undefined) options[key][key2] = cookieObject[key][key2];
+						if (cookieObject[key][key2][key3] !== undefined) options[key][key2][key3] = cookieObject[key][key2][key3];
+					});else {
+						options[key][key2] = cookieObject[key][key2];
+						if (options.commonOptions !== undefined) options.commonOptions[key][key2] = cookieObject[key][key2];
+					}
+				}
+			});else {
+				options[key] = cookieObject[key];
+				if (options.commonOptions !== undefined) options.commonOptions[key] = cookieObject[key];
+			}
+		});
+	};
+	this.setObject = function () {
+	};
+	this.isTrue = function (defaultValue) {
+		return defaultValue;
+	};
+}
 
-export { isEnabled, set, setObject, get, getObject, remove };
+export { isEnabled, set, setObject, get, getObject, remove, defaultCookie };
 //# sourceMappingURL=cookie.module.js.map

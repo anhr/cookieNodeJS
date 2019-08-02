@@ -9,6 +9,7 @@ Building cookie
 Open "Node.js command prompt"
 
 d:
-cd "D:\WebFeatures\GoogleSite\nodejs\cookieNodeJS"
+//cd "D:\WebFeatures\GoogleSite\nodejs\cookieNodeJS"
+cd "D:\My documents\MyProjects\webgl\three.js\GitHub\nodejs\cookieNodeJS"
 npm install
 npm run build

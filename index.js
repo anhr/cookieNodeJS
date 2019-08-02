@@ -134,7 +134,10 @@ function getObject( name, options, optionsDefault ) {
 
 	if ( options.optionsDefault === undefined )
 		options.optionsDefault = optionsDefault;
-	new defaultCookie().getObject( name, options, JSON.parse( options.cookie.get( name, JSON.stringify( optionsDefault ) ) ) );
+
+	//do not compatible with SpriteText. For tesxing gp to webgl_sprites_text.html
+//	new defaultCookie().getObject( name, options, JSON.parse( options.cookie.get( name, JSON.stringify( optionsDefault ) ) ) );
+	new defaultCookie().getObject( name, options, JSON.parse( get( name, JSON.stringify( optionsDefault ) ) ) );
 /*
 	if ( !optionsDefault )
 		return;//object's settings is not saving
