@@ -11,13 +11,14 @@
  *
  * http://www.apache.org/licenses/LICENSE-2.0
  */
-import { set as setCookie, get as getCookie, getObject, setObject, defaultCookie } from './index.js';
+import { set as setCookie, get as getCookie, getObject, copyObject, setObject, defaultCookie } from './index.js';
 var cookie = {
 
 	set: setCookie,
 	setObject: setObject,
 	get: getCookie,
 	getObject: getObject,
+	copyObject: copyObject,
 	defaultCookie: defaultCookie,
 
 }

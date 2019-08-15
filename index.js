@@ -14,7 +14,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
-export { isEnabled, set, setObject, get, getObject, remove, defaultCookie };
+export { isEnabled, set, setObject, get, getObject, copyObject, remove, defaultCookie };
 
 /**
  * Is the cookie enabled in your web browser?
@@ -69,18 +69,6 @@ function set( name, value, cookie_date ) {
 function setObject( name, object ) {
 
 	set( name, JSON.stringify( object ) );
-/*
-	var object = {};
-//		options = this.options;
-	Object.keys( options.optionsDefault ).forEach( function ( key ) {
-
-		object[key] = options[key];
-
-	} );
-	if ( options.cookieObject === undefined )
-		options.cookieObject = this;
-	options.cookieObject.set( name, JSON.stringify( object ) );
-*/
 
 };
 
@@ -114,86 +102,34 @@ function get( name, defaultValue ) {
 /**
  * gets an object from cookie.
  * @param {string} name name of the object
- * @param {Object} optionsDefault returns this default object if named object is not exists in the cookie.
- * @returns an object
- */
-/*
-function getObject( name, objectDefault ) {
-
-	return JSON.parse( get( name, JSON.stringify( objectDefault ) ) );
-
-};
-*/
-/**
- * gets an object from cookie.
- * @param {string} name name of the object
  * @param {any} options load an object from cookie into options
  * @param {Object} optionsDefault copy to options this default object if named object is not exists in the cookie.
  */
 function getObject( name, options, optionsDefault ) {
 
-	if ( options.optionsDefault === undefined )
-		options.optionsDefault = optionsDefault;
+//	new defaultCookie().getObject( name, options, JSON.parse( get( name, JSON.stringify( optionsDefault ) ) ) );
+	new defaultCookie().getObject( name, options, copyObject( name, optionsDefault ) );
 
-	//do not compatible with SpriteText. For tesxing gp to webgl_sprites_text.html
-//	new defaultCookie().getObject( name, options, JSON.parse( options.cookie.get( name, JSON.stringify( optionsDefault ) ) ) );
-	new defaultCookie().getObject( name, options, JSON.parse( get( name, JSON.stringify( optionsDefault ) ) ) );
-/*
-	if ( !optionsDefault )
-		return;//object's settings is not saving
-
-	if ( options.cookieObject === undefined )
-		options.cookieObject = options.cookie;
-
-	options.cookieObject.options = options;
-	var cookieObject = JSON.parse( options.cookieObject.get( name, JSON.stringify( options.optionsDefault ) ) );
-//	var cookieObject = options.cookieObject.getObject( name, optionsDefault );
-	Object.keys( options.optionsDefault ).forEach( function ( key ) {
-
-		if ( cookieObject[key] === undefined )
-			return;
-		if ( typeof options.optionsDefault[key] === "object" )
-			Object.keys( options.optionsDefault[key] ).forEach( function ( key2 ) {
-
-				if ( options[key] === undefined ) options[key] = cookieObject[key];
-				if ( cookieObject[key][key2] !== undefined ) {
-
-					if ( typeof cookieObject[key][key2] === "object" )
-						Object.keys( cookieObject[key][key2] ).forEach( function ( key3 ) {
-
-							if ( options[key][key2] === undefined ) options[key][key2] = cookieObject[key][key2];
-							if ( cookieObject[key][key2][key3] !== undefined )
-								options[key][key2][key3] = cookieObject[key][key2][key3];
-
-						} );
-					else {
-
-						options[key][key2] = cookieObject[key][key2];
-						if ( options.commonOptions !== undefined )
-							options.commonOptions[key][key2] = cookieObject[key][key2];
-
-					}
-
-				}
-
-			} );
-		else {
-
-			options[key] = cookieObject[key];
-			if ( options.commonOptions !== undefined )
-				options.commonOptions[key] = cookieObject[key];
-
-		}
-
-	} );
-*/
 };
+
+/**
+ * gets an object from cookie and returns a copy of object.
+ * @param {string} name name of the object
+ * @param {Object} objectDefault copy to options this default object if named object is not exists in the cookie.
+ * @returns copy of object from cookie
+ */
+function copyObject( name, objectDefault ) {
+
+	return JSON.parse( get( name, JSON.stringify( objectDefault ) ) );
+
+}
 
 /**
  * Remove cookie
  * @param {string} name cookie name.
  */
 function remove( name ) {
+
 	if ( !isEnabled() ) {
 
 		consoleCookieEnabled();
@@ -204,6 +140,7 @@ function remove( name ) {
 	var cookie_date = new Date();  // Текущая дата и время
 	cookie_date.setTime( cookie_date.getTime() - 1 );
 	document.cookie = name += "=; expires=" + cookie_date.toGMTString();
+
 }
 
 function consoleCookieEnabled() {
@@ -212,82 +149,64 @@ function consoleCookieEnabled() {
 
 }
 
-//Default cookie is not saving settings
+/**
+ * Default cookie is not saving settings
+ * @param {any} name is not using
+ */
 function defaultCookie( name ) {
 
+	/**
+	 * Default cookie is not loading settings
+	 * @param {any} defaultValue
+	 * @returns defaultValue
+	 */
 	this.get = function ( defaultValue ) {
 
-		// Default cookie is not loading settings
 		return defaultValue;
 
 	};
 
+	/**
+	 * Default cookie is not saving settings
+	 */
 	this.set = function () {
-
-		// Default cookie is not saving settings
 
 	};
 
+	/**
+	 * Default cookie is not loading objects
+	 * @param {string} name is not using
+	 * @param {any} options load an object from optionsDefault into options
+	 * @param {Object} optionsDefault source object
+	 */
 	this.getObject = function ( name, options, optionsDefault ) {
 
-		// Default cookie is not loading objects
-//		return optionsDefault;
+		// 
 		if ( !optionsDefault )
 			return;//object's settings is not saving
+		Object.keys( optionsDefault ).forEach( function ( key ) {
 
-		if ( options.optionsDefault === undefined )
-			options.optionsDefault = optionsDefault;
-
-		if ( options.cookieObject === undefined )
-			options.cookieObject = options.cookie;
-
-		options.cookieObject.options = options;
-//		var cookieObject = JSON.parse( options.cookieObject.get( name, JSON.stringify( options.optionsDefault ) ) );
-		var cookieObject = optionsDefault;
-		Object.keys( options.optionsDefault ).forEach( function ( key ) {
-
-			if ( cookieObject[key] === undefined )
-				return;
-			if ( typeof options.optionsDefault[key] === "object" )
-				Object.keys( options.optionsDefault[key] ).forEach( function ( key2 ) {
-
-					if ( options[key] === undefined ) options[key] = cookieObject[key];
-					if ( cookieObject[key][key2] !== undefined ) {
-
-						if ( typeof cookieObject[key][key2] === "object" )
-							Object.keys( cookieObject[key][key2] ).forEach( function ( key3 ) {
-
-								if ( options[key][key2] === undefined ) options[key][key2] = cookieObject[key][key2];
-								if ( cookieObject[key][key2][key3] !== undefined )
-									options[key][key2][key3] = cookieObject[key][key2][key3];
-
-							} );
-						else {
-
-							options[key][key2] = cookieObject[key][key2];
-							if ( options.commonOptions !== undefined )
-								options.commonOptions[key][key2] = cookieObject[key][key2];
-
-						}
-
-					}
-
-				} );
-			else {
-
-				options[key] = cookieObject[key];
-				if ( options.commonOptions !== undefined )
-					options.commonOptions[key] = cookieObject[key];
-
-			}
+			options[key] = optionsDefault[key];
 
 		} );
 
 	};
 
-	this.setObject = function () {
+	/**
+	 * copy and returns an object from objectDefault
+	 * @param {string} name is not using
+	 * @param {any} objectDefault source object
+	 */
+	this.copyObject = function ( name, objectDefault ){
 
-		// Default cookie is not saving object's settings
+		return JSON.parse( JSON.stringify( objectDefault ) );
+
+	}
+
+	/**
+	 * Default cookie is not saving object's settings
+	 */
+	this.setObject = function () {
 
 	};
 
