@@ -17,6 +17,21 @@
 	(factory((global.cookie = {})));
 }(this, (function (exports) { 'use strict';
 
+/**
+ * node.js version of the cookie.
+ * Cookies let you store user information in web pages.
+ * @see {@link https://www.w3schools.com/js/js_cookies.asp}
+ *
+ * @author Andrej Hristoliubov https://anhr.github.io/AboutMe/
+ *
+ * @copyright 2011 Data Arts Team, Google Creative Lab
+ *
+ * @license under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ */
 function isEnabled() {
 	return navigator.cookieEnabled;
 }
@@ -47,8 +62,10 @@ function get(name, defaultValue) {
 	return defaultValue;
 }
 function getObject(name, options, optionsDefault) {
-	if (options.optionsDefault === undefined) options.optionsDefault = optionsDefault;
-	new defaultCookie().getObject(name, options, JSON.parse(options.cookie.get(name, JSON.stringify(optionsDefault))));
+	new defaultCookie().getObject(name, options, copyObject(name, optionsDefault));
+}
+function copyObject(name, objectDefault) {
+	return JSON.parse(get(name, JSON.stringify(objectDefault)));
 }
 function remove(name) {
 	if (!isEnabled()) {
@@ -66,35 +83,17 @@ function defaultCookie(name) {
 	this.get = function (defaultValue) {
 		return defaultValue;
 	};
-	this.set = function () {
-	};
+	this.set = function () {};
 	this.getObject = function (name, options, optionsDefault) {
 		if (!optionsDefault) return;
-		if (options.optionsDefault === undefined) options.optionsDefault = optionsDefault;
-		if (options.cookieObject === undefined) options.cookieObject = options.cookie;
-		options.cookieObject.options = options;
-		var cookieObject = optionsDefault;
-		Object.keys(options.optionsDefault).forEach(function (key) {
-			if (cookieObject[key] === undefined) return;
-			if (typeof options.optionsDefault[key] === "object") Object.keys(options.optionsDefault[key]).forEach(function (key2) {
-				if (options[key] === undefined) options[key] = cookieObject[key];
-				if (cookieObject[key][key2] !== undefined) {
-					if (typeof cookieObject[key][key2] === "object") Object.keys(cookieObject[key][key2]).forEach(function (key3) {
-						if (options[key][key2] === undefined) options[key][key2] = cookieObject[key][key2];
-						if (cookieObject[key][key2][key3] !== undefined) options[key][key2][key3] = cookieObject[key][key2][key3];
-					});else {
-						options[key][key2] = cookieObject[key][key2];
-						if (options.commonOptions !== undefined) options.commonOptions[key][key2] = cookieObject[key][key2];
-					}
-				}
-			});else {
-				options[key] = cookieObject[key];
-				if (options.commonOptions !== undefined) options.commonOptions[key] = cookieObject[key];
-			}
+		Object.keys(optionsDefault).forEach(function (key) {
+			options[key] = optionsDefault[key];
 		});
 	};
-	this.setObject = function () {
+	this.copyObject = function (name, objectDefault) {
+		return JSON.parse(JSON.stringify(objectDefault));
 	};
+	this.setObject = function () {};
 	this.isTrue = function (defaultValue) {
 		return defaultValue;
 	};
@@ -105,6 +104,7 @@ exports.set = set;
 exports.setObject = setObject;
 exports.get = get;
 exports.getObject = getObject;
+exports.copyObject = copyObject;
 exports.remove = remove;
 exports.defaultCookie = defaultCookie;
 
