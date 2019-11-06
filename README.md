@@ -15,6 +15,10 @@ or
 ```
 <script src="https://raw.githack.com/anhr/cookieNodeJS/master/build/cookie.min.js"></script>
 ```
+or you can import cookie from cookie.js file in your JavaScript module. [Example.](https://raw.githack.com/anhr/myThreejs/master/Examples/html/)
+```
+import cookie from 'https://raw.githack.com/anhr/cookieNodeJS/master/cookie.js';
+```
 
 Now you can use window.cookie for store user information in web pages.
 
