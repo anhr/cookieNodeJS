@@ -137,7 +137,7 @@ function remove( name ) {
 
 	}
 	//http://ruseller.com/lessons.php?rub=28&id=593
-	var cookie_date = new Date();  // Текущая дата и время
+	var cookie_date = new Date();  // пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅ
 	cookie_date.setTime( cookie_date.getTime() - 1 );
 	document.cookie = name += "=; expires=" + cookie_date.toGMTString();
 
@@ -186,7 +186,12 @@ function defaultCookie( name ) {
 			return;//object's settings is not saving
 		Object.keys( optionsDefault ).forEach( function ( key ) {
 
-			options[key] = optionsDefault[key];
+			//I cannot modify options[key] if optionsDefault is read only and options[key] is not copy of optionsDefault[key]
+			//options[key] = optionsDefault[key];
+			//copy key
+			var option = optionsDefault[key];
+			if ( option !== undefined )
+				options[key] = JSON.parse( JSON.stringify( option ) );
 
 		} );
 
