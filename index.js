@@ -1,5 +1,6 @@
 /**
- * node.js version of the cookie.
+ * @module cookie
+ * @description node.js version of the cookie.
  * Cookies let you store user information in web pages.
  * @see {@link https://www.w3schools.com/js/js_cookies.asp}
  *
