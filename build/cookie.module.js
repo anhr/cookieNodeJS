@@ -12,7 +12,8 @@
  */
 
 /**
- * node.js version of the cookie.
+ * @module cookie
+ * @description node.js version of the cookie.
  * Cookies let you store user information in web pages.
  * @see {@link https://www.w3schools.com/js/js_cookies.asp}
  *
@@ -81,7 +82,8 @@ function defaultCookie(name) {
 	this.getObject = function (name, options, optionsDefault) {
 		if (!optionsDefault) return;
 		Object.keys(optionsDefault).forEach(function (key) {
-			options[key] = optionsDefault[key];
+			var option = optionsDefault[key];
+			if (option !== undefined) options[key] = JSON.parse(JSON.stringify(option));
 		});
 	};
 	this.copyObject = function (name, objectDefault) {
