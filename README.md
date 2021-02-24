@@ -1,4 +1,7 @@
 ﻿# cookie
+
+**Deprecated! Please go to [cookie](https://github.com/anhr/commonNodeJS/tree/master/cookieNodeJS).**
+
 The node.js version of the [cookie](https://www.w3schools.com/js/js_cookies.asp).
 Cookies let you store user information in web pages.
 [Example of using](https://raw.githack.com/anhr/cookieNodeJS/master/).
